@@ -2,7 +2,8 @@ import { Configuration, OpenAIApi } from 'openai';
 
 // ⛔ Replace this with your actual OpenAI key — no spaces, no weird characters
 const configuration = new Configuration({
-  apiKey: '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',
+  apiKey: 'apiKey: process.env.OPENAI_API_KEY, // ✅ Secure environment variable usage
+,
 });
 
 const openai = new OpenAIApi(configuration);
