@@ -1,7 +1,8 @@
 import { Configuration, OpenAIApi } from 'openai';
 
+// ⛔ Replace this with your actual OpenAI key — no spaces, no weird characters
 const configuration = new Configuration({
-  apiKey: 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 , // ← paste your real key here
+  apiKey: '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',
 });
 
 const openai = new OpenAIApi(configuration);
@@ -18,13 +19,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const completion = await openai.createChatCompletion({
-      model: 'gpt-3.5-turbo', // Use 'gpt-4' if you have confirmed access
+    const response = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo', // or 'gpt-4' if you have access
       messages: [
         {
           role: 'system',
           content:
-            'You are an expert in writing viral Depop and eBay product listings. Write a catchy SEO title, detailed Gen Z aesthetic description, 8 hashtags, and a bundle offer.',
+            'You are a professional SEO listing expert. Create a viral Depop or eBay listing including: 1) Title, 2) Description, 3) 8 Hashtags, 4) Bundle Offer. Use Gen Z tone and aesthetic keywords.',
         },
         {
           role: 'user',
@@ -34,10 +35,10 @@ export default async function handler(req, res) {
       temperature: 0.7,
     });
 
-    const result = completion.data.choices[0].message.content;
+    const result = response.data.choices[0].message.content;
     res.status(200).json({ listing: result });
-  } catch (error) {
-    console.error('OpenAI error:', error.response?.data || error.message);
+  } catch (err) {
+    console.error('OpenAI API Error:', err.response?.data || err.message);
     res.status(500).json({ error: 'Failed to generate listing.' });
   }
 }
