@@ -9,8 +9,12 @@ export default function Home() {
   const [price, setPrice] = useState('');
 
   const handleGenerate = async () => {
-    const res = await axios.post('/api/generate', { prompt: input });
-    setOutput(res.data.listing);
+    try {
+      const res = await axios.post('/api/generate', { prompt: input });
+      setOutput(res.data.listing);
+    } catch (err) {
+      setOutput("Error generating listing. Make sure your API key is set in Vercel.");
+    }
   };
 
   const handleCSVDownload = () => {
@@ -66,4 +70,14 @@ export default function Home() {
         style={{ marginRight: '1rem' }}
       />
       <input
-        type="number
+        type="number"
+        placeholder="Profit Goal"
+        value={profit}
+        onChange={(e) => setProfit(e.target.value)}
+        style={{ marginRight: '1rem' }}
+      />
+      <button onClick={handlePricing}>Calculate Price</button>
+      <div style={{ marginTop: '1rem' }}>{price && `Recommended Price: ${price}`}</div>
+    </div>
+  );
+}
