@@ -1,14 +1,10 @@
 import { Configuration, OpenAIApi } from 'openai';
 
-// ⚠️ Replace with your real OpenAI API key for testing
 const configuration = new Configuration({
-  apiKey: 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, // your full OpenAI key here
+  apiKey: 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 , // ← paste your real key here
 });
 
 const openai = new OpenAIApi(configuration);
-
-// Debugging log
-console.log('✅ API Key Check:', configuration.apiKey ? 'Found' : 'Missing');
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -23,12 +19,12 @@ export default async function handler(req, res) {
 
   try {
     const completion = await openai.createChatCompletion({
-      model: 'gpt-3.5-turbo', // Use 'gpt-4' if you’re sure your key has access
+      model: 'gpt-3.5-turbo', // Use 'gpt-4' if you have confirmed access
       messages: [
         {
           role: 'system',
           content:
-            'You are an expert in writing viral Depop and eBay product listings. Include a catchy title, detailed aesthetic description, 8 hashtags, and a bundle upsell message using Gen Z style.',
+            'You are an expert in writing viral Depop and eBay product listings. Write a catchy SEO title, detailed Gen Z aesthetic description, 8 hashtags, and a bundle offer.',
         },
         {
           role: 'user',
@@ -40,8 +36,8 @@ export default async function handler(req, res) {
 
     const result = completion.data.choices[0].message.content;
     res.status(200).json({ listing: result });
-  } catch (err) {
-    console.error('❌ OpenAI error:', err.response?.data || err.message);
+  } catch (error) {
+    console.error('OpenAI error:', error.response?.data || error.message);
     res.status(500).json({ error: 'Failed to generate listing.' });
   }
 }
