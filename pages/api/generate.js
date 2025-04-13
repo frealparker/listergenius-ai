@@ -3,7 +3,11 @@ import { Configuration, OpenAIApi } from 'openai';
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
 const openai = new OpenAIApi(configuration);
+
+// Debugging: Check if API key is loaded
+console.log('API Key Check:', process.env.OPENAI_API_KEY ? 'Found' : 'Missing');
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -18,12 +22,12 @@ export default async function handler(req, res) {
 
   try {
     const completion = await openai.createChatCompletion({
-      model: 'gpt-4',
+      model: 'gpt-4', // Change to 'gpt-3.5-turbo' if needed
       messages: [
         {
           role: 'system',
           content:
-            'You are an expert at writing viral product listings for Depop and eBay. Include an optimized title, aesthetic description, 8 relevant hashtags, and a bundle message. Use Gen Z, Y2K, and SEO-friendly language.',
+            'You are an expert at writing viral Depop and eBay product listings. Include an optimized title, a descriptive aesthetic, 8 hashtags, and a bundle upsell message. Use SEO and Gen Z lingo.',
         },
         {
           role: 'user',
@@ -40,3 +44,4 @@ export default async function handler(req, res) {
     res.status(500).json({ error: 'Failed to generate listing.' });
   }
 }
+
