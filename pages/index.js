@@ -98,4 +98,13 @@ export default function Home() {
         style={{ marginRight: '1rem' }}
       />
       <select value={platform} onChange={(e) => setPlatform(e.target.value)} style={{ marginRight: '1rem' }}>
-        <option value="depop">Depop
+        <option value="depop">Depop</option>
+        <option value="ebay">eBay</option>
+        <option value="none">Other / No Fees</option>
+      </select>
+      <button onClick={handlePricing}>Calculate Price</button>
+
+      <div style={{ marginTop: '1rem' }}>{price && `Recommended Price: ${price}`}</div>
+    </div>
+  );
+}
