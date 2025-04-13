@@ -7,6 +7,14 @@ export default function Home() {
   const [cost, setCost] = useState('');
   const [profit, setProfit] = useState('');
   const [price, setPrice] = useState('');
+  const [platform, setPlatform] = useState('depop');
+  const [discount, setDiscount] = useState('');
+
+  const platformFees = {
+    depop: 0.10,
+    ebay: 0.13,
+    none: 0,
+  };
 
   const handleGenerate = async () => {
     try {
@@ -32,9 +40,14 @@ export default function Home() {
   const handlePricing = () => {
     const itemCost = parseFloat(cost);
     const desiredProfit = parseFloat(profit);
+    const discountDecimal = parseFloat(discount) / 100 || 0;
+    const platformFee = platformFees[platform] || 0;
+
     if (!isNaN(itemCost) && !isNaN(desiredProfit)) {
-      const calculatedPrice = (itemCost + desiredProfit).toFixed(2);
-      setPrice(`$${calculatedPrice}`);
+      const priceBeforeFees = itemCost + desiredProfit;
+      const totalFees = priceBeforeFees * (platformFee + discountDecimal);
+      const finalPrice = (priceBeforeFees + totalFees).toFixed(2);
+      setPrice(`$${finalPrice}`);
     } else {
       setPrice('Invalid input');
     }
@@ -43,6 +56,7 @@ export default function Home() {
   return (
     <div style={{ padding: '2rem', fontFamily: 'Arial' }}>
       <h1>ListGenius AI - Depop/eBay Listing Generator</h1>
+
       <textarea
         rows={5}
         cols={80}
@@ -76,8 +90,12 @@ export default function Home() {
         onChange={(e) => setProfit(e.target.value)}
         style={{ marginRight: '1rem' }}
       />
-      <button onClick={handlePricing}>Calculate Price</button>
-      <div style={{ marginTop: '1rem' }}>{price && `Recommended Price: ${price}`}</div>
-    </div>
-  );
-}
+      <input
+        type="number"
+        placeholder="Discount % (optional)"
+        value={discount}
+        onChange={(e) => setDiscount(e.target.value)}
+        style={{ marginRight: '1rem' }}
+      />
+      <select value={platform} onChange={(e) => setPlatform(e.target.value)} style={{ marginRight: '1rem' }}>
+        <option value="depop">Depop
