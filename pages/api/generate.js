@@ -1,9 +1,7 @@
 import { Configuration, OpenAIApi } from 'openai';
 
-// ⛔ Replace this with your actual OpenAI key — no spaces, no weird characters
 const configuration = new Configuration({
-  apiKey: 'apiKey: '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'
-
+  apiKey: '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'
 });
 
 const openai = new OpenAIApi(configuration);
@@ -21,12 +19,11 @@ export default async function handler(req, res) {
 
   try {
     const response = await openai.createChatCompletion({
-      model: 'gpt-3.5-turbo', // or 'gpt-4' if you have access
+      model: 'gpt-3.5-turbo',
       messages: [
         {
           role: 'system',
-          content:
-            'You are a professional SEO listing expert. Create a viral Depop or eBay listing including: 1) Title, 2) Description, 3) 8 Hashtags, 4) Bundle Offer. Use Gen Z tone and aesthetic keywords.',
+          content: 'Write a Depop or eBay listing with SEO title, aesthetic description, 8 hashtags, and bundle upsell.',
         },
         {
           role: 'user',
